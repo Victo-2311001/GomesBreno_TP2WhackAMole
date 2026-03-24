@@ -1,24 +1,24 @@
+using System;
 using UnityEngine;
 
 public class ReactionMole : MonoBehaviour
 {
-    void Start()
-    {
+    Spawn spawn;
 
+    //Récupere le spawn pour le libérer quand Mole est frappé
+    public void InitialiserSpawn(Spawn monSpawn)
+    {
+        spawn = monSpawn;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    //Détecter le contact du marteau
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Marteau"))
         {
             Destroy(gameObject);
             Debug.Log("Mole morte");
+            spawn.LibererAcces();
         }
     }
 }
