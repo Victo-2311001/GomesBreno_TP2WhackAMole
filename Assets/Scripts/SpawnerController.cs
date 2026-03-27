@@ -26,10 +26,11 @@ public class SpawnerController : MonoBehaviour
         StartCoroutine(SpawnLoop());
     }
 
-    private void ChoisirSpawn()
+    private bool ChoisirSpawn()
     {
+        int tentatives = 0;
         //Chercher un spawn disponible 
-        while (!spawnChoisi)
+        while (!spawnChoisi && tentatives < 10)
         {
             //Random pour poigner un spawn aléatoire dans les tableau de spawns
             int spawnAleatoire = Random.Range(0, spawnsPossibles.Length);
@@ -41,7 +42,9 @@ public class SpawnerController : MonoBehaviour
                 spawn.BloquerAcces();
                 spawnChoisi = true;
             }
+            tentatives++;
         }
+        return spawnChoisi;
     }
    
     private void SpawnerMole()

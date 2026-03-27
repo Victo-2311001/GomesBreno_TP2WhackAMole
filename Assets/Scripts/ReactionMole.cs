@@ -5,7 +5,19 @@ public class ReactionMole : MonoBehaviour
 {
     Spawn spawn;
 
-    //Récupere le spawn pour le libérer quand Mole est frappé
+    [SerializeField] private float tempsDespawn = 1.5f;
+
+    void Start()
+    {
+        Invoke("Despawn", tempsDespawn);
+    }
+
+    private void Despawn()
+    {
+        spawn.LibererAcces();
+        Destroy(gameObject);
+    }
+
     public void InitialiserSpawn(Spawn monSpawn)
     {
         spawn = monSpawn;
@@ -16,9 +28,11 @@ public class ReactionMole : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Marteau"))
         {
-            Destroy(gameObject);
-            Debug.Log("Mole morte");
+            CancelInvoke("Despawn");
             spawn.LibererAcces();
+            GameController.Instance.AjouterPoint();
+            Debug.Log("Mole morte");
+            Destroy(gameObject);
         }
     }
 }
