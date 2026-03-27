@@ -1,15 +1,30 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    private int points = 0;
+    public enum EtatJeu { Menu, EnJeu, GameOver }
+
+    [Header("Canvas")]
+    [SerializeField] private GameObject canvasMenu;
+    [SerializeField] private GameObject canvasHUD;
+    [SerializeField] private GameObject canvasGameOver;
+
+    [Header("Textes")]
+    [SerializeField] private TextMeshProUGUI texteTimer;
+    [SerializeField] private TextMeshProUGUI texteScoreFinal;
+
+    public EtatJeu etatActuel { get; private set; }
 
     [SerializeField] private float dureePartie = 60f;
+    private float tempsEcoule;
+    private bool timerActif;
 
-    private float tempsRestant;
+    private int points = 0;
     public bool partieTerminee { get; private set; }
 
     void Awake()
@@ -22,32 +37,42 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        partieTerminee = false;
     }
 
     private void Start()
     {
-        CommencerPartie();
+        ChangerEtat(EtatJeu.Menu);
     }
 
     void Update()
     {
-        if (partieTerminee) return;
-
-        tempsRestant -= Time.deltaTime;
-
-        if (tempsRestant <= 0f)
+        if (timerActif)
         {
-            Debug.Log(tempsRestant);
-            tempsRestant = 0f;
-            TerminerPartie();
+            tempsEcoule += Time.deltaTime;
+            AfficherTimer();
+
+            if (tempsEcoule >= dureePartie)
+            {
+                TerminerPartie();
+            }
         }
+    }
+
+    public void ChangerEtat(EtatJeu nouvelEtat)
+    {
+        etatActuel = nouvelEtat;
+        canvasMenu.SetActive(etatActuel == EtatJeu.Menu);
+        canvasHUD.SetActive(etatActuel == EtatJeu.EnJeu);
+        canvasGameOver.SetActive(etatActuel == EtatJeu.GameOver);
     }
 
     public void CommencerPartie()
     {
-        points = 0;
-        tempsRestant = dureePartie;
+        tempsEcoule = 0f;
+        timerActif = true;
         partieTerminee = false;
+        ChangerEtat(EtatJeu.EnJeu);
     }
 
     public void AjouterPoint()
@@ -58,7 +83,23 @@ public class GameController : MonoBehaviour
 
     private void TerminerPartie()
     {
-        partieTerminee = true;
-        Debug.Log("Partie terminée! Score: " + points);
+        timerActif = false;
+        int score = Mathf.Max(100, 1000 - Mathf.FloorToInt(tempsEcoule) * 10);
+        texteScoreFinal.text = $"Score : {score}";
+        ChangerEtat(EtatJeu.GameOver);
+    }
+
+    public void Rejouer()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
+        );
+    }
+
+    private void AfficherTimer()
+    {
+        int minutes = Mathf.FloorToInt(tempsEcoule / 60f);
+        int secondes = Mathf.FloorToInt(tempsEcoule % 60f);
+        texteTimer.text = $"{minutes:00}:{secondes:00}";
     }
 }

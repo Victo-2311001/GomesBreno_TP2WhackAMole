@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static GameController;
 
 public class SpawnerController : MonoBehaviour
 {
@@ -68,9 +69,12 @@ public class SpawnerController : MonoBehaviour
 
     IEnumerator SpawnLoop()
     {
-        while (!GameController.Instance.partieTerminee)
+        while (true)
         {
-            SpawnerMole();
+            if (GameController.Instance.etatActuel == EtatJeu.EnJeu)
+            {
+                SpawnerMole();
+            }
             float attente = Random.Range(1f, 3f);
             yield return new WaitForSeconds(attente);
         }
