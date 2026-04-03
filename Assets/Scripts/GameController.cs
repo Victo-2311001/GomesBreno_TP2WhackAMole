@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     [Header("Textes")]
     [SerializeField] private TextMeshProUGUI texteTimer;
     [SerializeField] private TextMeshProUGUI texteScoreFinal;
+    [SerializeField] private TextMeshProUGUI texteScore;
 
     public EtatJeu etatActuel { get; private set; }
 
@@ -79,13 +80,14 @@ public class GameController : MonoBehaviour
     {
         points++;
         Debug.Log("Score: " + points);
+        texteScore.text = $"Score : {points}";
     }
 
     private void TerminerPartie()
     {
         timerActif = false;
-        int score = Mathf.Max(100, 1000 - Mathf.FloorToInt(tempsEcoule) * 10);
-        texteScoreFinal.text = $"Score : {score}";
+        texteScoreFinal.text = $"Score : {points}";
+        Debug.Log("Jeu terminé");
         ChangerEtat(EtatJeu.GameOver);
     }
 

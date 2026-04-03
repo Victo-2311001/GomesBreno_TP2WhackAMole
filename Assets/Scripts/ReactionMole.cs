@@ -7,6 +7,8 @@ public class ReactionMole : MonoBehaviour
 
     [SerializeField] private float tempsDespawn = 1.5f;
 
+    private bool estMorte = false;
+
     void Start()
     {
         Invoke("Despawn", tempsDespawn);
@@ -26,8 +28,15 @@ public class ReactionMole : MonoBehaviour
     //Détecter le contact du marteau
     private void OnCollisionEnter(Collision collision)
     {
+        //Éviter plusieurs collisions
+        if (estMorte)
+        {
+            return;
+        }
+
         if (collision.gameObject.CompareTag("Marteau"))
         {
+            estMorte = true;
             CancelInvoke("Despawn");
             spawn.LibererAcces();
             GameController.Instance.AjouterPoint();
