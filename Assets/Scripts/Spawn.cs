@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Classe responsable pour gérer l'accès des spawns 
+/// </summary>
 public class Spawn : MonoBehaviour
 {
     public bool spawnDisponible {  get; private set; }

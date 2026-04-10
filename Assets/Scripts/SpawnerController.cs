@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 using static GameController;
 
+/// <summary>
+/// Classe responsable pour choisir, vérifier et bloquer un spawn et instancier une mole
+/// </summary>
 public class SpawnerController : MonoBehaviour
 {
     [SerializeField]
@@ -27,18 +30,22 @@ public class SpawnerController : MonoBehaviour
         StartCoroutine(SpawnLoop());
     }
 
+    //Choisir le spawn pour la prochaine mole aléatoirememt
     private bool ChoisirSpawn()
     {
         int tentatives = 0;
-        //Chercher un spawn disponible 
+        //Chercher un spawn disponible *le tentatives sert à limiter le nombre de loops pour éviter des bugs*
         while (!spawnChoisi && tentatives < 10)
         {
             //Random pour poigner un spawn aléatoire dans les tableau de spawns
             int spawnAleatoire = Random.Range(0, spawnsPossibles.Length);
 
+            //Si le spawn choisi aléatoirement est disponible
             if (spawnsPossibles[spawnAleatoire].spawnDisponible)
             {
+                //Prendre le spawn
                 spawn = spawnsPossibles[spawnAleatoire];
+
                 //Rendre le spawn innacessible 
                 spawn.BloquerAcces();
                 spawnChoisi = true;
@@ -67,6 +74,7 @@ public class SpawnerController : MonoBehaviour
         return;
     }
 
+    //Lancer la function qui spawn les moles avec un delay aléatoire
     IEnumerator SpawnLoop()
     {
         while (true)

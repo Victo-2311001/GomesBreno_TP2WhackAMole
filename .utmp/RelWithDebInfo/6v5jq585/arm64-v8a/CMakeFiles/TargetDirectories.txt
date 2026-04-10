@@ -1,0 +1,5 @@
+C:/TPs/GomesBreno_TP2WhackAMole/.utmp/RelWithDebInfo/6v5jq585/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/TPs/GomesBreno_TP2WhackAMole/.utmp/RelWithDebInfo/6v5jq585/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/TPs/GomesBreno_TP2WhackAMole/.utmp/RelWithDebInfo/6v5jq585/arm64-v8a/GameActivity/CMakeFiles/game.dir
+C:/TPs/GomesBreno_TP2WhackAMole/.utmp/RelWithDebInfo/6v5jq585/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+C:/TPs/GomesBreno_TP2WhackAMole/.utmp/RelWithDebInfo/6v5jq585/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

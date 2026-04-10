@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
+/// <summary>
+/// Classe responsable pour gérer les écrans, l'affichage des points et timer, et fonctions principales du jeu
+/// </summary>
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
@@ -28,6 +31,7 @@ public class GameController : MonoBehaviour
     private int points = 0;
     public bool partieTerminee { get; private set; }
 
+    //Singleton pour accèder le GameController dans les autres classes
     void Awake()
     {
         if(Instance == null)
@@ -41,6 +45,7 @@ public class GameController : MonoBehaviour
         partieTerminee = false;
     }
 
+    //Afficher le menu principal
     private void Start()
     {
         ChangerEtat(EtatJeu.Menu);
@@ -53,6 +58,7 @@ public class GameController : MonoBehaviour
             tempsEcoule += Time.deltaTime;
             AfficherTimer();
 
+            //Terminer jeu si temps écoulé
             if (tempsEcoule >= dureePartie)
             {
                 TerminerPartie();
@@ -60,6 +66,7 @@ public class GameController : MonoBehaviour
         }
     }
 
+    //Changer l'écran affichée selon l'état du jeu
     public void ChangerEtat(EtatJeu nouvelEtat)
     {
         etatActuel = nouvelEtat;
@@ -76,13 +83,19 @@ public class GameController : MonoBehaviour
         ChangerEtat(EtatJeu.EnJeu);
     }
 
+    //Function appélée dans la collision du marteau avec une mole pour ajouter et mettre à jour les points
     public void AjouterPoint()
     {
+        if(partieTerminee)
+        {
+            return;
+        }
+
         points++;
-        Debug.Log("Score: " + points);
         texteScore.text = $"Score : {points}";
     }
 
+    //Afficher l'écran final avec les points
     private void TerminerPartie()
     {
         timerActif = false;
@@ -91,6 +104,7 @@ public class GameController : MonoBehaviour
         ChangerEtat(EtatJeu.GameOver);
     }
 
+    //Relancer le menu principal
     public void Rejouer()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(
@@ -98,6 +112,7 @@ public class GameController : MonoBehaviour
         );
     }
 
+    //Convertir et afficher le temps
     private void AfficherTimer()
     {
         int minutes = Mathf.FloorToInt(tempsEcoule / 60f);
